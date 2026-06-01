@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Livros & Curiosidades | Portal Literário</title>
+    <!-- Google Fonts para uma tipografia agradável -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 (free icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fdfaf6;
+            color: #2c2b28;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+
+        /* Cores principais */
+        :root {
+            --coral: #e76f51;
+            --terracota: #e9c46a;
+            --sage: #a8c0b0;
+            --deep-ink: #2c3e2f;
+            --paper: #fdfaf6;
+            --shadow: rgba(0, 0, 0, 0.05);
+        }
+
+        /* header e navegação */
+        .top-bar {
+            background-color: white;
+            box-shadow: 0 4px 12px var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo h1 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            font-size: 1.8rem;
+            color: var(--coral);
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: var(--deep-ink);
+            display: block;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 500;
+            color: #3b3a37;
+            transition: color 0.2s;
+            font-size: 1rem;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--coral);
+        }
+
+        .cart-icon {
+            background: #f0ede8;
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            cursor: default;
+        }
+
+        /* hero section */
+        .hero {
+            background: linear-gradient(105deg, #fff3e8 0%, #faeedf 100%);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-bottom: 1px solid #f0e2d4;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            color: var(--deep-ink);
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #5f5c57;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--coral);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--coral);
+            color: var(--coral);
+        }
+
+        .btn-outline:hover {
+            background: var(--coral);
+            color: white;
+        }
+
+        .btn:hover {
+            background-color: #d35c3a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.05);
+        }
+
+        /* seções genéricas */
+        .section {
+            max-width: 1280px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            border-left: 6px solid var(--coral);
+            padding-left: 1rem;
+            color: var(--deep-ink);
+        }
+
+        /* grid de livros */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 2rem;
+        }
+
+        .book-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.03);
+            border: 1px solid #eee7df;
+        }
+
+        .book-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 28px -12px rgba(0, 0, 0, 0.15);
+        }
+
+        .book-img {
+            background: #f3efe9;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: var(--coral);
+        }
+
+        .book-info {
+            padding: 1.5rem;
+        }
+
+        .book-info h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .book-author {
+            color: #8e8a84;
+            font-size: 0.85rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .book-price {
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: var(--coral);
+            margin: 0.75rem 0;
+        }
+
+        .btn-small {
+            background-color: var(--deep-ink);
+            color: white;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 30px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+            width: 100%;
+        }
+
+        .btn-small:hover {
+            background-color: #1f2e21;
+        }
+
+        /* curiosidades - cards diferenciados */
+        .curiosities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .curiosity-card {
+            background: #fffcf8;
+            border-radius: 28px;
+            padding: 1.8rem;
+            transition: all 0.2s;
+            border: 1px solid #f3e9de;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.02);
+        }
+
+        .curiosity-icon {
+            font-size: 2.2rem;
+            color: var(--terracota);
+            margin-bottom: 1rem;
+        }
+
+        .curiosity-card h4 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .curiosity-card p {
+            color: #5b5853;
+            line-height: 1.5;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #e9c46a30;
+            color: #b47c2e;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+            margin-top: 1rem;
+        }
+
+        /* newsletter */
+        .newsletter {
+            background: #e9e1d7;
+            border-radius: 48px;
+            padding: 2.5rem;
+            text-align: center;
+            margin: 3rem auto;
+        }
+
+        .newsletter h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .newsletter p {
+            max-width: 500px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .news-form {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .news-form input {
+            padding: 0.9rem 1.5rem;
+            border-radius: 60px;
+            border: none;
+            width: 280px;
+            font-size: 1rem;
+            background: white;
+        }
+
+        /* footer */
+        footer {
+            background: #2c2b28;
+            color: #cfcfca;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .footer-col p {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .social i {
+            font-size: 1.4rem;
+            margin-right: 1rem;
+            color: #cfcfca;
+            transition: color 0.2s;
+        }
+
+        .social i:hover {
+            color: var(--coral);
+        }
+
+        /* toast simples */
+        .toast-message {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--deep-ink);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 60px;
+            font-weight: 500;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+        }
+
+        .toast-message.show {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                text-align: center;
+            }
+            .hero h2 {
+                font-size: 2rem;
+            }
+            .section-title {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="top-bar">
+    <div class="navbar">
+        <div class="logo">
+            <h1>Páginas & Segredos</h1>
+            <span>Livros, letras e histórias ocultas</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#" class="active">Início</a></li>
+            <li><a href="#livros">Catálogo</a></li>
+            <li><a href="#curiosidades">Curiosidades</a></li>
+            <li><a href="#news">Newsletter</a></li>
+        </ul>
+        <div class="cart-icon">
+            <i class="fas fa-book-open"></i> <span id="cartCount">0</span>
+            <i class="fas fa-shopping-cart" style="margin-left: 6px;"></i>
+        </div>
+    </div>
+</div>
+
+<section class="hero">
+    <div class="hero-content">
+        <h2>Mergulhe em mundos literários</h2>
+        <p>Clássicos, contemporâneos e curiosidades que vão te surpreender. Cada livro guarda uma história além das páginas.</p>
+        <a href="#livros" class="btn">Explorar livros <i class="fas fa-arrow-right"></i></a>
+        <a href="#curiosidades" class="btn btn-outline" style="margin-left: 1rem;">Fatos literários</a>
+    </div>
+</section>
+
+<!-- Seção de Livros para venda -->
+<section id="livros" class="section">
+    <h2 class="section-title"><i class="fas fa-store"></i> 📖 Livros em Destaque</h2>
+    <div class="books-grid" id="booksContainer">
+        <!-- livros serão inseridos via JS dinâmico -->
+    </div>
+</section>
+
+<!-- Seção Curiosidades literárias -->
+<section id="curiosidades" class="section">
+    <h2 class="section-title"><i class="fas fa-lightbulb"></i> 📜 Curiosidades sobre livros</h2>
+    <div class="curiosities-grid" id="curiositiesContainer">
+        <!-- curiosidades carregadas via JS -->
+    </div>
+</section>
+
+<!-- Newsletter -->
+<section id="news" class="section newsletter">
+    <h3>📚 Receba novidades e curiosidades raras</h3>
+    <p>Inscreva-se e ganhe 10% de desconto na primeira compra + fatos literários toda semana!</p>
+    <div class="news-form">
+        <input type="email" id="emailInput" placeholder="seu@email.com" required>
+        <button class="btn" id="subscribeBtn">Assinar newsletter</button>
+    </div>
+    <p style="font-size: 0.8rem; margin-top: 1rem;">Fique por dentro de lançamentos e histórias secretas do mundo editorial.</p>
+</section>
+
+<footer>
+    <div class="footer-content">
+        <div class="footer-col">
+            <h3 style="color: white;">Páginas & Segredos</h3>
+            <p>Onde cada livro conta uma história <br> e cada curiosidade revela um universo.</p>
+        </div>
+        <div class="footer-col">
+            <h4>Contato</h4>
+            <p><i class="fas fa-envelope"></i> contato@paginas.com</p>
+            <p><i class="fas fa-phone-alt"></i> +55 (11) 98765-4321</p>
+        </div>
+        <div class="footer-col social">
+            <h4>Redes</h4>
+            <i class="fab fa-instagram"></i>
+            <i class="fab fa-twitter"></i>
+            <i class="fab fa-facebook"></i>
+            <i class="fab fa-tiktok"></i>
+        </div>
+    </div>
+    <hr style="margin: 1.5rem 0 1rem; border-color: #4a4844;">
+    <p style="text-align: center; font-size: 0.75rem;">© 2025 Páginas & Segredos — Livros, curiosidades e amor pela leitura.</p>
+</footer>
+
+<!-- Toast de notificação -->
+<div id="toastMsg" class="toast-message">✔️ Item adicionado ao carrinho</div>
+
+<script>
+    // Base de dados de livros para venda
+    const booksData = [
+        { id: 1, title: "O Nome do Vento", author: "Patrick Rothfuss", price: 49.90, icon: "fas fa-feather-alt", fact: "Primeiro livro da Crônica do Matador do Rei" },
+        { id: 2, title: "1984", author: "George Orwell", price: 39.90, icon: "fas fa-eye", fact: "Proibido em diversos regimes totalitários" },
+        { id: 3, title: "Orgulho e Preconceito", author: "Jane Austen", price: 44.90, icon: "fas fa-crown", fact: "Título original: 'First Impressions'" },
+        { id: 4, title: "Fundação", author: "Isaac Asimov", price: 59.90, icon: "fas fa-globe", fact: "Inspirou a série da AppleTV" },
+        { id: 5, title: "Cem Anos de Solidão", author: "Gabriel García Márquez", price: 54.90, icon: "fas fa-tree", fact: "Mais de 50 milhões de cópias vendidas" },
+        { id: 6, title: "A Menina que Roubava Livros", author: "Markus Zusak", price: 47.90, icon: "fas fa-book-heart", fact: "Narrado pela Morte, um clássico moderno" }
+    ];
+
+    // Array de curiosidades (extra)
+    const curiositiesList = [
+        { title: "📖 O livro mais vendido do mundo", fact: "A Bíblia lidera com mais de 5 bilhões de cópias, mas entre obras seculares, 'Dom Quixote' é o mais vendido (est. 500 milhões).", icon: "fas fa-church" },
+        { title: "🐛 Livro mais antigo ainda existente", fact: "O 'Livro dos Mortos' egípcio tem cerca de 3.500 anos. Já o mais antigo impresso é o 'Sutra do Diamante' (868 d.C.).", icon: "fas fa-scroll" },
+        { title: "✍️ Curiosidade sobre 'Moby Dick'", fact: "Herman Melville foi ignorado na época; o livro só fez sucesso décadas após sua morte. Vendeu menos de 3.000 cópias em vida.", icon: "fas fa-whale" },
+        { title: "🎭 Série Harry Potter", fact: "J.K. Rowling foi rejeitada por 12 editoras. A edição brasileira já vendeu milhões e é uma das maiores franquias globais.", icon: "fas fa-hat-wizard" },
+        { title: "🏆 Maior biblioteca do mundo", fact: "A Biblioteca do Congresso (EUA) tem mais de 170 milhões de itens, incluindo livros, manuscritos e partituras.", icon: "fas fa-building" },
+        { title: "🔥 Livro que inspirou revoluções", fact: "'A Cabana do Pai Tomás' (Harriet Beecher Stowe) ajudou a fortalecer o movimento abolicionista nos EUA.", icon: "fas fa-fist-raised" }
+    ];
+
+    // Carrinho (simples, armazenado em memória)
+    let cartItems = [];
+
+    // Atualizar contador do carrinho no header
+    function updateCartUI() {
+        const cartCountSpan = document.getElementById('cartCount');
+        const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+        if (cartCountSpan) cartCountSpan.innerText = totalItems;
+    }
+
+    // Função para adicionar livro ao carrinho
+    function addToCart(bookId) {
+        const book = booksData.find(b => b.id === bookId);
+        if (!book) return;
+        
+        const existingItem = cartItems.find(item => item.id === bookId);
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            cartItems.push({ 
+                id: book.id, 
+                title: book.title, 
+                price: book.price, 
+                quantity: 1 
+            });
+        }
+        updateCartUI();
+        showToast(`📚 "${book.title}" adicionado ao carrinho!`);
+    }
+
+    // Toast de notificação
+    let toastTimeout;
+    function showToast(message) {
+        const toast = document.getElementById('toastMsg');
+        if (!toast) return;
+        toast.innerText = `✔️ ${message}`;
+        toast.classList.add('show');
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => {
+            toast.classList.remove('show');
+        }, 2500);
+    }
+
+    // Renderizar livros na grade
+    function renderBooks() {
+        const container = document.getElementById('booksContainer');
+        if (!container) return;
+        container.innerHTML = '';
+        booksData.forEach(book => {
+            const card = document.createElement('div');
+            card.className = 'book-card';
+            card.innerHTML = `
+                <div class="book-img">
+                    <i class="${book.icon}" style="font-size: 3.5rem;"></i>
+                </div>
+                <div class="book-info">
+                    <h3>${book.title}</h3>
+                    <div class="book-author"><i class="fas fa-user-pen"></i> ${book.author}</div>
+                    <div class="book-price">R$ ${book.price.toFixed(2)}</div>
+                    <button class="btn-small" data-id="${book.id}">Comprar / Adicionar</button>
+                    <div style="margin-top: 10px; font-size: 0.7rem; color:#b69f8a;"><i class="fas fa-info-circle"></i> ${book.fact.substring(0, 50)}...</div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+        // Adicionar eventos após render
+        document.querySelectorAll('.btn-small').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = parseInt(btn.getAttribute('data-id'));
+                addToCart(id);
+            });
+        });
+    }
+
+    // Renderizar curiosidades extras
+    function renderCuriosities() {
+        const container = document.getElementById('curiositiesContainer');
+        if (!container) return;
+        container.innerHTML = '';
+        curiositiesList.forEach(cur => {
+            const card = document.createElement('div');
+            card.className = 'curiosity-card';
+            card.innerHTML = `
+                <div class="curiosity-icon"><i class="${cur.icon}"></i></div>
+                <h4>${cur.title}</h4>
+                <p>${cur.fact}</p>
+                <div class="badge"><i class="fas fa-bookmark"></i> Sabia?</div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    // Função para assinar newsletter com validação simples
+    function subscribeNewsletter(email) {
+        if (!email || !email.includes('@') || !email.includes('.')) {
+            showToast('❌ Por favor, insira um e-mail válido.');
+            return false;
+        }
+        // Simular cadastro
+        showToast(`🎉 Obrigado! ${email} receberá novidades e 10% de desconto.`);
+        document.getElementById('emailInput').value = '';
+        return true;
+    }
+
+    // Fazer highlight do link ativo ao rolar a página (opcional, simples)
+    function setActiveLink() {
+        const sections = ['livros', 'curiosidades', 'news'];
+        const scrollPosition = window.scrollY + 150;
+        let active = 'inicio';
+        for (let section of sections) {
+            const el = document.getElementById(section);
+            if (el && el.offsetTop <= scrollPosition && el.offsetTop + el.offsetHeight > scrollPosition) {
+                active = section;
+                break;
+            }
+        }
+        const links = document.querySelectorAll('.nav-links a');
+        links.forEach(link => {
+            link.classList.remove('active');
+            const href = link.getAttribute('href').substring(1);
+            if ((href === '' && active === 'inicio') || href === active) {
+                link.classList.add('active');
+            } else if (href === '' && scrollPosition < 100) {
+                link.classList.add('active');
+            }
+        });
+        // caso inicio sem section
+        if (scrollPosition < document.getElementById('livros')?.offsetTop - 100) {
+            document.querySelector('.nav-links a[href="#"]')?.classList.add('active');
+        }
+    }
+
+    // Configurar eventos e carregamento
+    document.addEventListener('DOMContentLoaded', () => {
+        renderBooks();
+        renderCuriosities();
+        updateCartUI();
+
+        // Botão newsletter
+        const subBtn = document.getElementById('subscribeBtn');
+        if (subBtn) {
+            subBtn.addEventListener('click', () => {
+                const emailInput = document.getElementById('emailInput');
+                subscribeNewsletter(emailInput.value.trim());
+            });
+        }
+        // Enter no campo email
+        const emailField = document.getElementById('emailInput');
+        if (emailField) {
+            emailField.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    subscribeNewsletter(emailField.value.trim());
+                }
+            });
+        }
+
+        window.addEventListener('scroll', setActiveLink);
+        setActiveLink();
+
+        // Adicionar também suavidade nos links internos
+        document.querySelectorAll('.nav-links a, .hero .btn, .hero .btn-outline').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                if (targetId && targetId !== '#' && targetId.startsWith('#')) {
+                    e.preventDefault();
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    } else if (targetId === '#') {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
